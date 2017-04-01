@@ -40,10 +40,4 @@ $ ansible-playbook snmpd.yml
 
 * [Alexander Nesterov](https://www.facebook.com/nester.wsx)
  
-## License
 
-None. 
-
-## Copyright
-
-(c) Alexander Nesterov
