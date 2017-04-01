@@ -1,0 +1,9 @@
+---
+  - name: Install snmpd and configure snmpd
+    vars_files:
+      - group_vars/snmp.yml
+    hosts:
+      - all
+    roles:
+      - snmpd
+

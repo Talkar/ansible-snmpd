@@ -1,0 +1,8 @@
+---
+snmp_version: 3
+snmp_user: snmp
+snmp_sec_level: authPriv
+snmp_auth_protocol: SHA
+snmp_auth_passphrase: passphrase1uGffde55GPTdRRfAM
+snmp_priv_protocol: AES
+snmp_priv_passphrase: passphrase2GaW22KcDPHj93HtNm

@@ -1,0 +1,47 @@
+---
+- name: Add OS specific variables
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "vars/{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml"
+    - "vars/{{ ansible_distribution }}.yml"
+    - "vars/{{ ansible_os_family }}.yml"
+    - "vars/defaults.yml"
+  tags:
+    - configuration
+    - packages
+
+- name: Install snmpd
+  package: name={{ snmp_package_name }} state=present
+  tags:
+    - packages
+
+- name: Create snmpd config
+  template: 
+    src: "snmpd.conf.j2"
+    dest: "/etc/snmp/{{ snmp_config_name }}.conf"
+    owner: root
+    group: root
+    mode: 0644
+  register: check_snmp
+  check_mode: yes
+  tags:
+    - configuration
+
+- block:
+  - name: stopped snmp
+    service:  name={{ snmp_service_name }} state=stopped
+  - name: Create snmpd config
+    template: 
+      src: "snmpd.conf.j2"
+      dest: "/etc/snmp/{{ snmp_config_name }}.conf"
+      owner: root
+      group: root
+      mode: 0644
+    notify: 
+      - restart snmp
+      - enabled snmp
+  - name: started snmp
+    service:  name={{ snmp_service_name }} state=started  
+  when: check_snmp.changed
+  tags:
+    - configuration
